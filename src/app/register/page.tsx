@@ -1,24 +1,24 @@
-
 "use client";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
-
+const Register = () => {
+ 
   const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>)=>{
     event.preventDefault();
 
     const requestPayload = {
+      name: event.currentTarget.fullname.value,
       email: event.currentTarget.email.value,
       password: event.currentTarget.password.value
     }
 
     try {
 
-      const { data } = await axios.post("/api/auth/login", requestPayload);
+      const { data } = await axios.post("/api/auth/register", requestPayload);
       //alert(JSON.stringify(data));
-      router.push("/dashboard");
+      router.push("/");
       
     } catch (error) {
       const err = error as AxiosError;
@@ -28,8 +28,17 @@ export default function Home() {
   }
   return (
     <div className='max-w-3xl mx-auto'>
-      <h1 className="mt-2">JWT Cookie based NextJS Authentication</h1>
+      <h1 className="mt-2">Enter details to register</h1>
         <form onSubmit={handleSubmit} className="mt-3">
+            <div className="mb-2">
+              <label htmlFor="fullname" className="mr-1">Full name</label>
+              <input 
+              type="text"
+              id="fullname"
+              name="fullname"
+              required
+              className="border rounded border-slate-700" />
+            </div>
             <div>
               <label htmlFor="email" className="mr-1">Email</label>
               <input 
@@ -53,3 +62,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Register
